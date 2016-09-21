@@ -16,50 +16,43 @@ case $CIRCLE_NODE_INDEX in
   ./meteor self-test --headless \
       --with-tag "custom-warehouse" \
       --exclude "$SELF_TEST_EXCLUDE"
-  ;;
-1)
+
   echo "Running self-test (1): A-Com"
   ./meteor self-test --headless \
       --file "^[a-b]|^c[a-n]|^co[a-l]|^compiler-plugins" \
       --without-tag "custom-warehouse" \
       --exclude "$SELF_TEST_EXCLUDE"
-  ;;
-2)
+
   echo "Running self-test (2): Con-K"
   ./meteor self-test --headless \
       --file "^co[n-z]|^c[p-z]|^[d-k]" \
       --without-tag "custom-warehouse" \
       --exclude "$SELF_TEST_EXCLUDE"
-  ;;
-3)
+
   echo "Running self-test (3): L-O"
   ./meteor self-test --headless \
       --file "^[l-o]" \
       --without-tag "custom-warehouse" \
       --exclude "$SELF_TEST_EXCLUDE"
-  ;;
-4)
+
   echo "Running self-test (4): P"
   ./meteor self-test --headless \
       --file "^p" \
       --without-tag "custom-warehouse" \
       --exclude "$SELF_TEST_EXCLUDE"
-  ;;
-5)
+
   echo "Running self-test (5): Run"
   ./meteor self-test --headless \
       --file "^run" \
       --without-tag "custom-warehouse" \
       --exclude "$SELF_TEST_EXCLUDE"
-  ;;
-6)
+
   echo "Running self-test (6): R-S"
   ./meteor self-test --headless \
       --file "^r(?!un)|^s" \
       --without-tag "custom-warehouse" \
       --exclude "$SELF_TEST_EXCLUDE"
-  ;;
-7)
+
   echo "Running self-test (7): Sp-Z"
   ./meteor self-test --headless \
       --file "^[t-z]|^command-line" \
