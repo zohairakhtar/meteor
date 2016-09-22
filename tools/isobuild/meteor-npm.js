@@ -23,6 +23,7 @@ import {
 } from "../utils/colon-converter.js";
 
 var meteorNpm = exports;
+meteorNpm._printNpmCalls = true;
 
 // if a user exits meteor while we're trying to create a .npm
 // directory, we will have temporary directories that we clean up
