@@ -4,5 +4,5 @@
 # these commands herself, we don't care as much about helpful warnings,
 # and we certainly don't want them to obscure actual errors.
 
-loglevel = error
+loglevel = info
 progress = false

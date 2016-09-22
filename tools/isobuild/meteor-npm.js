@@ -821,12 +821,16 @@ Profile("meteorNpm.runNpmCommand", function (args, cwd) {
             process.stdout.write(err ? 'failed\n' : 'done\n');
           }
 
-          resolve({
+          const resolveObject = {
             success: ! err,
             error: (err ? `${err.message}${stderr}` : stderr),
             stdout: stdout,
             stderr: stderr
-          });
+          };
+
+          process.stdout.write('  the resolveObject is: ' + JSON.stringify(resolveObject, null, 2));
+
+          resolve(resolveObject);
         }
       );
     });
