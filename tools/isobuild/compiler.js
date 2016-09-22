@@ -104,6 +104,7 @@ compiler.compile = Profile(function (packageSource, options) {
     });
   });
 
+  require('../runners/run-log.js').log('Fetching npm packages')
   // Grab any npm dependencies. Keep them in a cache in the package
   // source directory so we don't have to do this from scratch on
   // every build.
@@ -127,6 +128,8 @@ compiler.compile = Profile(function (packageSource, options) {
       );
     }
   }
+  require('../runners/run-log.js').log('Done fetching npm packages')
+
 
   // Find all the isobuild:* pseudo-packages that this package depends on. Why
   // do we need to do this? Well, we actually load the plugins in this package
@@ -170,6 +173,7 @@ compiler.compile = Profile(function (packageSource, options) {
     isobuildFeatures
   });
 
+  require('../runners/run-log.js').log('Compiling Unibuilds')
   _.each(packageSource.architectures, function (architecture) {
     if (architecture.arch === 'web.cordova' && ! includeCordovaUnibuild) {
       return;
