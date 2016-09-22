@@ -5,6 +5,11 @@ export SELF_TEST_EXCLUDE="^can't publish package with colons|^old cli tests|^log
 # Don't print as many progress indicators
 export EMACS=t
 
+if [ "$CIRCLE_NODE_TOTAL" != 8 ]; then
+  echo "The number of configured containers does not match the expectations of the testing script.  Exiting."
+  exit 1
+fi
+
 # Since PhantomJS has been removed from dev_bundle/lib/node_modules
 # (#6905), but self-test still needs it, install it now.
 ./meteor npm install -g phantomjs-prebuilt browserstack-webdriver
