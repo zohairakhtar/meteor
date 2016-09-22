@@ -12,6 +12,7 @@ dependencies:
     # shouldn't take longer than 10 minutes
     - METEOR_PRETTY_OUTPUT=0 METEOR_DEBUG_BUILD=true ./meteor --get-ready:
         timeout: 600
+    - echo "*********************** READY **************************"
 
 test:
   override:
