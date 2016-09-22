@@ -16,5 +16,5 @@ dependencies:
 test:
   override:
     - exit 0
-        parallel: true
-        timeout: 10
+      parallel: true
+      timeout: 10
