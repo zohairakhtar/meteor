@@ -95,11 +95,13 @@ meteorNpm.updateDependencies = function (packageName,
       // we already nave a .npm directory. update it appropriately with some
       // ceremony involving:
       // `npm install`, `npm install name@version`, `npm shrinkwrap`
+      runLog.log('updating existing');
       updateExistingNpmDirectory(
         packageName, newPackageNpmDir, packageNpmDir, npmDependencies, quiet);
     } else {
       // create a fresh .npm directory with `npm install
       // name@version` and `npm shrinkwrap`
+      runLog.log('creating fresh');
       createFreshNpmDirectory(
         packageName, newPackageNpmDir, packageNpmDir, npmDependencies, quiet);
     }
@@ -563,8 +565,10 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
     preservedShrinkwrap = npmTree;
   }
 
+  runLog.log('making npm dir');
   makeNewPackageNpmDir(newPackageNpmDir);
 
+  runLog.log('made npm dir');
   if (!_.isEmpty(preservedShrinkwrap.dependencies)) {
     const newShrinkwrapFile = files.pathJoin(
       newPackageNpmDir,
@@ -583,6 +587,7 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
     files.unlink(newShrinkwrapFile);
   }
 
+  runLog.log('making npm dir');
   completeNpmDirectory(packageName, newPackageNpmDir, packageNpmDir,
                        npmDependencies);
 };
@@ -615,7 +620,9 @@ var createFreshNpmDirectory = function (packageName, newPackageNpmDir,
     logUpdateDependencies(packageName, npmDependencies);
   }
 
+  runLog.log('making package dir')
   makeNewPackageNpmDir(newPackageNpmDir);
+  runLog.log('made package dir')
   // install dependencies
   _.each(npmDependencies, function (version, name) {
     runLog.log('installing', name)
@@ -867,7 +874,7 @@ var installNpmModule = function (name, version, dir) {
   // We now use a forked version of npm with our PR
   // https://github.com/npm/npm/pull/5137 to work around this.
   var result = runNpmCommand(["install", installArg], dir);
-  runLog.log('ran command')
+  runLog.log('ran npm command')
 
   if (! result.success) {
     var pkgNotFound = "404 '" + utils.quotemeta(name) +
