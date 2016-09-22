@@ -58,18 +58,30 @@ meteorNpm.updateDependencies = function (packageName,
   var newPackageNpmDir =
     convertColonsInPath(packageNpmDir) + '-new-' + utils.randomToken();
 
+  runLog.log('updating dependencies --- ');
+  runLog.log('   -> packageName:', packageName);
+  runLog.log('   -> packageNpmDir:', packageNpmDir);
+  runLog.log('   -> npmDependencies:', npmDependencies);
+  runLog.log('   -> quiet:', quiet);
+  runLog.log('   => newPackageNpmDir:', newPackageNpmDir);
+
   if (! npmDependencies || _.isEmpty(npmDependencies)) {
+
+    runLog.log('NO DEPENDENCIES OR EMPTY!');
     // No NPM dependencies? Delete the .npm directory if it exists (because,
     // eg, we used to have NPM dependencies but don't any more).  We'd like to
     // do this in as atomic a way as possible in case multiple meteor
     // instances are trying to make this update in parallel, so we rename the
     // directory to something before doing the rm -rf.
     try {
+      runLog.log(' renaming', packageNpmDir, 'to', newPackageNpmDir);
       files.rename(packageNpmDir, newPackageNpmDir);
     } catch (e) {
       if (e.code !== 'ENOENT') {
         throw e;
       }
+      runLog.log('  error while renaming', e);
+      runLog.log('   this hopefully means it didnt exist, which is good.');
       // It didn't exist, which is exactly what we wanted.
       return false;
     }
@@ -108,17 +120,26 @@ meteorNpm.updateDependencies = function (packageName,
       // Something happened that was out of our control, but wasn't
       // exactly unexpected (eg, no such npm package, no internet
       // connection). Handle it gracefully.
+      runLog.log('  an NPM failure happened and we want to deal with it gracefully?');
+      runLog.log('   the error was', e);
       return false;
     }
 
+    runLog.log('  some other error', e);
     // Some other exception -- let it propagate.
     throw e;
   } finally {
+    runLog.log(' finally dealing with this, checking if new package npm dir exists');
     if (files.exists(newPackageNpmDir)) {
+      runLog.log('  okay, it exists.  must kill!...recursively!');
       files.rm_recursive(newPackageNpmDir);
     }
+    runLog.log(' remove the makeNewPackageNpmDir from tmpDirs that we cleanup');
     tmpDirs = _.without(tmpDirs, newPackageNpmDir);
+    runLog.log('  tmpDirs is now', tmpDirs);
   }
+
+  runLog.log('  done with the dependencies stuff stuff');
 
   return true;
 };
