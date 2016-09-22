@@ -106,7 +106,9 @@ meteorNpm.updateDependencies = function (packageName,
         packageName, newPackageNpmDir, packageNpmDir, npmDependencies, quiet);
     }
   } catch (e) {
+    runLog.log('caught error')
     if (e instanceof NpmFailure) {
+      runLog.log('being graceful')
       // Something happened that was out of our control, but wasn't
       // exactly unexpected (eg, no such npm package, no internet
       // connection). Handle it gracefully.
