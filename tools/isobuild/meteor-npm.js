@@ -772,11 +772,17 @@ Profile("meteorNpm.runNpmCommand", function (args, cwd) {
   import { getEnv } from "../cli/dev-bundle-bin-helpers.js";
 
   const devBundleDir = files.getDevBundle();
+
+  runLog.log('  the dev bundle directory is ' + devBundleDir);
+
   const isWindows = process.platform === "win32";
+
   const npmPath = files.convertToOSPath(files.pathJoin(
     devBundleDir, "bin",
     isWindows ? "npm.cmd" : "npm"
   ));
+
+  runLog.log('  the npm path is ' + npmPath);
 
   if (meteorNpm._printNpmCalls) {
     // only used by test-bundler.js
@@ -796,10 +802,14 @@ Profile("meteorNpm.runNpmCommand", function (args, cwd) {
       opts.cwd = files.convertToOSPath(cwd);
     }
 
+    runLog.log('   opts:' + JSON.stringify(opts, null, 2));
+
     // Make sure we don't honor any user-provided configuration files.
     env.npm_config_userconfig = npmUserConfigFile;
 
     return new Promise(function (resolve) {
+
+      runLog.log('   getting ready to spawn');
       require('child_process').execFile(
         npmPath, args, opts, function (err, stdout, stderr) {
           if (meteorNpm._printNpmCalls) {
