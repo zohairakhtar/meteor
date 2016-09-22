@@ -618,11 +618,14 @@ var createFreshNpmDirectory = function (packageName, newPackageNpmDir,
   makeNewPackageNpmDir(newPackageNpmDir);
   // install dependencies
   _.each(npmDependencies, function (version, name) {
+    runLog.log('installing', name)
     installNpmModule(name, version, newPackageNpmDir);
+    runLog.log('done installing', name)
   });
 
   completeNpmDirectory(packageName, newPackageNpmDir, packageNpmDir,
                        npmDependencies);
+  runLog.log('npm complete')
 };
 
 // Shared code for updateExistingNpmDirectory and createFreshNpmDirectory.
@@ -843,7 +846,9 @@ var getShrinkwrappedDependencies = function (dir) {
 };
 
 var installNpmModule = function (name, version, dir) {
+  runLog.log('checking connection')
   ensureConnected();
+  runLog.log('connected')
 
   var installArg = utils.isNpmUrl(version)
     ? version : (name + "@" + version);
@@ -862,6 +867,7 @@ var installNpmModule = function (name, version, dir) {
   // We now use a forked version of npm with our PR
   // https://github.com/npm/npm/pull/5137 to work around this.
   var result = runNpmCommand(["install", installArg], dir);
+  runLog.log('ran command')
 
   if (! result.success) {
     var pkgNotFound = "404 '" + utils.quotemeta(name) +
@@ -878,6 +884,7 @@ var installNpmModule = function (name, version, dir) {
     }
 
     // Recover by returning false from updateDependencies
+    runLog.log('throwing failure')
     throw new NpmFailure;
   }
 
