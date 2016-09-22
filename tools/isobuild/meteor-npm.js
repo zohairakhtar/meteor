@@ -125,7 +125,9 @@ meteorNpm.updateDependencies = function (packageName,
         packageName, newPackageNpmDir, packageNpmDir, npmDependencies, quiet);
     }
   } catch (e) {
+    runLog.log('caught error')
     if (e instanceof NpmFailure) {
+      runLog.log('being graceful')
       // Something happened that was out of our control, but wasn't
       // exactly unexpected (eg, no such npm package, no internet
       // connection). Handle it gracefully.
@@ -619,6 +621,7 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
     preservedShrinkwrap = npmTree;
   }
 
+  runLog.log('making npm dir');
   makeNewPackageNpmDir(newPackageNpmDir);
 
   runLog.log('  made new NPM directory');
@@ -651,8 +654,7 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
     files.unlink(newShrinkwrapFile);
   }
 
-  runLog.log('   going to "complete" the NPM directory now');
-
+  runLog.log('making npm dir');
   completeNpmDirectory(packageName, newPackageNpmDir, packageNpmDir,
                        npmDependencies);
 };
@@ -686,7 +688,9 @@ var createFreshNpmDirectory = function (packageName, newPackageNpmDir,
     logUpdateDependencies(packageName, npmDependencies);
   }
 
+  runLog.log('making package dir')
   makeNewPackageNpmDir(newPackageNpmDir);
+  runLog.log('made package dir')
   // install dependencies
   _.each(npmDependencies, function (version, name) {
     runLog.log('installing', name)
@@ -961,7 +965,7 @@ var installNpmModule = function (name, version, dir) {
   // We now use a forked version of npm with our PR
   // https://github.com/npm/npm/pull/5137 to work around this.
   var result = runNpmCommand(["install", installArg], dir);
-  runLog.log('ran command')
+  runLog.log('ran npm command')
 
   if (! result.success) {
     var pkgNotFound = "404 '" + utils.quotemeta(name) +
