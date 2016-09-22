@@ -59,10 +59,10 @@ meteorNpm.updateDependencies = function (packageName,
     convertColonsInPath(packageNpmDir) + '-new-' + utils.randomToken();
 
   runLog.log('updating dependencies --- ');
-  runLog.log('   -> packageName:', packageName);
-  runLog.log('   -> packageNpmDir:', packageNpmDir);
-  runLog.log('   -> npmDependencies:', npmDependencies);
-  runLog.log('   -> quiet:', quiet);
+  runLog.log('   -> packageName: ' + packageName);
+  runLog.log('   -> packageNpmDir:' + packageNpmDir);
+  runLog.log('   -> npmDependencies:' + JSON.stringify(npmDependencies, null, 2));
+  runLog.log('   -> quiet:' + quiet);
   runLog.log('   => newPackageNpmDir:', newPackageNpmDir);
 
   if (! npmDependencies || _.isEmpty(npmDependencies)) {
@@ -74,13 +74,14 @@ meteorNpm.updateDependencies = function (packageName,
     // instances are trying to make this update in parallel, so we rename the
     // directory to something before doing the rm -rf.
     try {
-      runLog.log(' renaming', packageNpmDir, 'to', newPackageNpmDir);
+      runLog.log(' renaming "' + packageNpmDir + '" to "' + newPackageNpmDir + '"');
       files.rename(packageNpmDir, newPackageNpmDir);
     } catch (e) {
       if (e.code !== 'ENOENT') {
         throw e;
       }
-      runLog.log('  error while renaming', e);
+      runLog.log('  error while renaming');
+      runLog.log(e);
       runLog.log('   this hopefully means it didnt exist, which is good.');
       // It didn't exist, which is exactly what we wanted.
       return false;
@@ -120,12 +121,13 @@ meteorNpm.updateDependencies = function (packageName,
       // Something happened that was out of our control, but wasn't
       // exactly unexpected (eg, no such npm package, no internet
       // connection). Handle it gracefully.
-      runLog.log('  an NPM failure happened and we want to deal with it gracefully?');
-      runLog.log('   the error was', e);
+      runLog.log('  an NPM failure happened and we want to deal with it gracefully? error:');
+      runLog.log(e);
       return false;
     }
 
-    runLog.log('  some other error', e);
+    runLog.log('  some other error');
+    runLog.log(e);
     // Some other exception -- let it propagate.
     throw e;
   } finally {
@@ -136,7 +138,8 @@ meteorNpm.updateDependencies = function (packageName,
     }
     runLog.log(' remove the makeNewPackageNpmDir from tmpDirs that we cleanup');
     tmpDirs = _.without(tmpDirs, newPackageNpmDir);
-    runLog.log('  tmpDirs is now', tmpDirs);
+    runLog.log('  tmpDirs is now');
+    runLog.log(JSON.stringify(tmpDirs, null, 2));
   }
 
   runLog.log('  done with the dependencies stuff stuff');
