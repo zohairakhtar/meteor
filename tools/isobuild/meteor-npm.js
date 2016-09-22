@@ -1002,34 +1002,57 @@ firstTen.join("\n"));
 };
 
 var installFromShrinkwrap = function (dir) {
+
+  runLog.log('  installing from shrinkwrap for: ' + dir);
+
   if (! files.exists(files.pathJoin(dir, "npm-shrinkwrap.json"))) {
+    runLog.log('  cannot call npm install without a npm-shrinkwrap.json file present');
     throw new Error(
       "Can't call `npm install` without a npm-shrinkwrap.json file present");
   }
 
+  runLog.log('  ensuring that we are connected');
+
   ensureConnected();
 
   const tempPkgJsonPath = files.pathJoin(dir, "package.json");
+
+  runLog.log('  tmp pkg json path is: ' + tempPkgJsonPath);
   const pkgJsonExisted = files.exists(tempPkgJsonPath);
+
+  runLog.log('  pkgJsonExisted was: ' + pkgJsonExisted);
+
   if (! pkgJsonExisted) {
+
+    runLog.log('   it was empty so writing an empty package.json');
     // Writing an empty package.json file prevents ENOENT warnings about
     // package.json not existing, which are noisy at best and sometimes
     // seem to interfere with the install.
     files.writeFile(tempPkgJsonPath, "{}\n", "utf8");
   }
 
+  runLog.log('  running npm install command');
+
   // `npm install`, which reads npm-shrinkwrap.json.
   var result = runNpmCommand(["install"], dir);
 
+  runLog.log('  dun runnin npm install command.  result: ' + JSON.stringify(result, null, 2));
+
   if (! pkgJsonExisted) {
+
+    runLog.log('  package json did not exist so we will destroy the tempPkgJsonPath rm -rf: ' + tempPkgJsonPath);
+
     files.rm_recursive(tempPkgJsonPath);
   }
 
   if (! result.success) {
+    runLog.log('  it was not successful so throwing');
     buildmessage.error(`couldn't install npm packages from npm-shrinkwrap: ${result.error}`);
     // Recover by returning false from updateDependencies
     throw new NpmFailure;
   }
+
+  runLog.log('  recording last rebuild versions');
 
   const nodeModulesDir = files.pathJoin(dir, "node_modules");
   files.readdir(nodeModulesDir).forEach(function (name) {
@@ -1038,12 +1061,15 @@ var installFromShrinkwrap = function (dir) {
       recordLastRebuildVersions(pkgDir);
     }
   });
+
+  runLog.log('  done installing from shrinkwrap');
 };
 
 // ensure we can reach http://npmjs.org before we try to install
 // dependencies. `npm install` times out after more than a minute.
 var ensureConnected = function () {
   try {
+    runLog.log('   getting NPMJS HOME PAGE URL ');
     httpHelpers.getUrl(process.env.NPM_CONFIG_REGISTRY || "http://registry.npmjs.org");
   } catch (e) {
     buildmessage.error("Can't install npm dependencies. " +
