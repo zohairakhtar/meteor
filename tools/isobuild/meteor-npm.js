@@ -63,7 +63,7 @@ meteorNpm.updateDependencies = function (packageName,
   runLog.log('   -> packageNpmDir:' + packageNpmDir);
   runLog.log('   -> npmDependencies:' + JSON.stringify(npmDependencies, null, 2));
   runLog.log('   -> quiet:' + quiet);
-  runLog.log('   => newPackageNpmDir:', newPackageNpmDir);
+  runLog.log('   => newPackageNpmDir:' + newPackageNpmDir);
 
   if (! npmDependencies || _.isEmpty(npmDependencies)) {
 
@@ -90,6 +90,8 @@ meteorNpm.updateDependencies = function (packageName,
     return false;
   }
 
+  runLog.log('   -> going to try things.');
+
   try {
     // v0.6.0 had a bug that could cause .npm directories to be
     // created without npm-shrinkwrap.json
@@ -99,20 +101,26 @@ meteorNpm.updateDependencies = function (packageName,
     //
     // If you've reached that state, delete the empty directory and
     // proceed.
+
+    runLog.log('  checking if the package NPM dir exists but no shrinkwrap');
     if (files.exists(packageNpmDir) &&
         ! files.exists(files.pathJoin(packageNpmDir, 'npm-shrinkwrap.json'))) {
+      runLog.log('   it did, going to kill kill kill it.');
       files.rm_recursive(packageNpmDir);
     }
 
+    runLog.log('  now how about the directory otherwise.')
     if (files.exists(packageNpmDir)) {
       // we already nave a .npm directory. update it appropriately with some
       // ceremony involving:
       // `npm install`, `npm install name@version`, `npm shrinkwrap`
+      runLog.log('  Oh yeah, it exists, let us update it.');
       updateExistingNpmDirectory(
         packageName, newPackageNpmDir, packageNpmDir, npmDependencies, quiet);
     } else {
       // create a fresh .npm directory with `npm install
       // name@version` and `npm shrinkwrap`
+      runLog.log('  let us get fresh');
       createFreshNpmDirectory(
         packageName, newPackageNpmDir, packageNpmDir, npmDependencies, quiet);
     }
@@ -506,6 +514,8 @@ var makeNewPackageNpmDir = function (newPackageNpmDir) {
 var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
                                            packageNpmDir, npmDependencies,
                                            quiet) {
+
+  runLog.log(' update the existing NPM directory');
   // sanity check on contents of .npm directory
   if (!files.stat(packageNpmDir).isDirectory()) {
     throw new Error("Corrupted .npm directory -- should be a directory: " +
@@ -635,6 +645,7 @@ function isSubtreeOf(subsetTree, supersetTree, predicate) {
 
 var createFreshNpmDirectory = function (packageName, newPackageNpmDir,
                                         packageNpmDir, npmDependencies, quiet) {
+  runLog.log('  creating fresh npm directory');
   if (! quiet) {
     logUpdateDependencies(packageName, npmDependencies);
   }
@@ -655,6 +666,8 @@ var createFreshNpmDirectory = function (packageName, newPackageNpmDir,
 // Shared code for updateExistingNpmDirectory and createFreshNpmDirectory.
 var completeNpmDirectory = function (packageName, newPackageNpmDir,
                                      packageNpmDir, npmDependencies) {
+
+  runLog.log(' complete the npm directory');
   // Create a shrinkwrap file.
   shrinkwrap(newPackageNpmDir);
 
