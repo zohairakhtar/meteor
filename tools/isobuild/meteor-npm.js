@@ -518,10 +518,12 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
   runLog.log(' update the existing NPM directory');
   // sanity check on contents of .npm directory
   if (!files.stat(packageNpmDir).isDirectory()) {
+    runLog.log(' corrupted .npm directory, should be a directory.  throwing');
     throw new Error("Corrupted .npm directory -- should be a directory: " +
                     packageNpmDir);
   }
   if (!files.exists(files.pathJoin(packageNpmDir, 'npm-shrinkwrap.json'))) {
+    runLog.log(' corrupted .npm directory, can NOT find shrinking gangsta wrappers. throwing down.');
     throw new Error(
       "Corrupted .npm directory -- can't find npm-shrinkwrap.json in " +
         packageNpmDir);
@@ -530,32 +532,52 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
   // We need to rebuild all node modules when the Node version
   // changes, in case there are some binary ones. Technically this is
   // racey, but it shouldn't fail very often.
+
+  runLog.log('exact quote from comment:')
+  runLog.log('We need to rebuild all node modules when the Node version changes, ');
+  runLog.log('in case there are some binary ones. Technically this is racey, but it ');
+  runLog.log("~~SHOULDN'T FAIL VERY OFTEN~~ (emphasis mine)")
+
   var nodeModulesDir = files.pathJoin(packageNpmDir, 'node_modules');
   if (files.exists(nodeModulesDir)) {
+    runLog.log('  Yeah yeah, node modules directory exists.');
     var oldNodeVersion;
     try {
+      runLog.log(' trying to read the old node version');
       oldNodeVersion = files.readFile(
         files.pathJoin(packageNpmDir, 'node_modules', '.node_version'), 'utf8');
+      runLog.log('  the old version was retrieved: ' + oldNodeVersion);
     } catch (e) {
       if (e.code !== 'ENOENT') {
         throw e;
       }
+      runLog.log('  ok using some stupid old node version instead??????');
       // Use the Node version from the last release where we didn't
       // drop this file.
       oldNodeVersion = 'v0.8.24';
     }
 
+    runLog.log(' the "current node compatibility version" is: ' + currentNodeCompatibilityVersion());
+    runLog.log('   but the "oldNodeVersion" is: ' + oldNodeVersion);
+
     if (oldNodeVersion !== currentNodeCompatibilityVersion()) {
+      runLog.log('  they differ so RAGE DELETE tiemz plz n thx');
       files.rm_recursive(nodeModulesDir);
     }
   }
+
+
+  runLog.log('   ok we got out of that first mess');
 
   // Make sure node_modules is present (fix for #1761). Prevents npm install
   // from installing to an existing node_modules dir higher up in the
   // filesystem.  node_modules may be absent due to a change in Node version or
   // when `meteor add`ing a cloned package for the first time (node_modules is
   // excluded by .gitignore)
+
+  runLog.log('  checking to see if this node modules directory exists: ' + nodeModulesDir);
   if (! files.exists(nodeModulesDir)) {
+    runLog.log('       => it does NOT so we will make it now');
     files.mkdir(nodeModulesDir);
   }
 
@@ -616,6 +638,8 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
 
     files.unlink(newShrinkwrapFile);
   }
+
+  runLog.log('   going to "complete" the NPM directory now');
 
   completeNpmDirectory(packageName, newPackageNpmDir, packageNpmDir,
                        npmDependencies);
