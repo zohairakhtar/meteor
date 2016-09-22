@@ -833,9 +833,8 @@ Profile("meteorNpm.runNpmCommand", function (args, cwd) {
           resolve(resolveObject);
         }
       );
-    });
-
-  }).await();
+    }).await();
+  });
 });
 
 // Gets a JSON object from `npm ls --json` (getInstalledDependenciesTree) or
