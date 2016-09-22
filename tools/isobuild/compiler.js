@@ -119,9 +119,6 @@ compiler.compile = Profile(function (packageSource, options) {
   // need to delete dependencies we used to have.
   var nodeModulesPath = null;
   if (packageSource.npmCacheDirectory) {
-    require('../runners/run-log.js').log('The npm packageSource name is', packageSource.name);
-    require('../runners/run-log.js').log('The npm packageSource npmCacheDirectory is', packageSource.npmCacheDirectory);
-    require('../runners/run-log.js').log('The npm packageSource npmDependencies arae', packageSource.npmDependencies);
     if (meteorNpm.updateDependencies(packageSource.name,
                                      packageSource.npmCacheDirectory,
                                      packageSource.npmDependencies)) {
