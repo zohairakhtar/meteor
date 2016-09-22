@@ -621,11 +621,17 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
 
   makeNewPackageNpmDir(newPackageNpmDir);
 
+  runLog.log('  made new NPM directory');
+
   if (!_.isEmpty(preservedShrinkwrap.dependencies)) {
+
+    runLog.log('   dependencies are not empty ');
     const newShrinkwrapFile = files.pathJoin(
       newPackageNpmDir,
       'npm-shrinkwrap.json'
     );
+
+    runLog.log('  new shrinkwrap file is: ' + newShrinkwrapFile);
 
     // There are some unchanged packages here. Install from shrinkwrap.
     files.writeFile(
@@ -633,8 +639,14 @@ var updateExistingNpmDirectory = function (packageName, newPackageNpmDir,
       JSON.stringify(preservedShrinkwrap, null, 2)
     );
 
+    runLog.log('  wrote the preserved Shrinkwrap file: ' + preservedShrinkwrap);
+
+    runLog.log('  installing from shrinkwrap');
+
     // `npm install`
     installFromShrinkwrap(newPackageNpmDir);
+
+    runLog.log('  done installing from shrinkwrapo, unlinking shrinkwrapo');
 
     files.unlink(newShrinkwrapFile);
   }
@@ -695,14 +707,25 @@ var completeNpmDirectory = function (packageName, newPackageNpmDir,
   // Create a shrinkwrap file.
   shrinkwrap(newPackageNpmDir);
 
+  runLog.log('  done with making shrinko');
+
   // And stow a copy of npm-shrinkwrap too.
   files.copyFile(
     files.pathJoin(newPackageNpmDir, 'npm-shrinkwrap.json'),
     files.pathJoin(newPackageNpmDir, 'node_modules', '.npm-shrinkwrap.json'));
 
+  runLog.log(' done with copy');
+
   createReadme(newPackageNpmDir);
+
+  runLog.log('  done with readme');
+
   createNodeVersion(newPackageNpmDir);
+
+  runLog.log('  done making node version thingy');
   files.renameDirAlmostAtomically(newPackageNpmDir, packageNpmDir);
+
+  runLog.log('  done renaming "almost" atomically');
 };
 
 var createReadme = function (newPackageNpmDir) {
