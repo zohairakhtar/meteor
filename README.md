@@ -12,7 +12,7 @@ With Meteor you write apps:
 * that send data over the wire, rather than HTML
 * using your choice of popular open-source libraries
 
-## What to Use Meteor.js for and When to Use It
+## What to Use Meteor.js for and When to Use It (In other words, the purpose of this section)
 
 Meteor is an open-source, production-ready, real-time full-stack web application framework written using [Node.js](https://github.com/nodejs/node). Meteor takes the hard and complicated parts of building an app and puts them into an open-source platform to help developers focus on what's most important to them in order to get their apps built much faster.  
 
@@ -24,17 +24,14 @@ Meteor has isomorphic APIs. This means that Meteor uses the same methods that wo
 
 Meteor allows for very rapid prototyping and produces cross-platform code for apps to run on the web, Android, and iOS. 
 
-#### Develop With One Language
 
-Web developers often need to know different technologies and may become frustrated when working on the front-end, back-end, or the database. With Meteor, you can build and manage them all with JavaScript. 
-
-Develope with JavaScript in any environment: 
 
 - The application server
 - The web browser
 - On mobile devices
 
 #### Databases
+
 
 The default database for Meteor is the [MongoDB](https://github.com/mongodb/mongo) database, but there are alternatives:
 
