@@ -1,44 +1,32 @@
-# Meteor
+![Imgur](http://i.imgur.com/XwTwNPJ.png)
 
 [![TravisCI Status](https://travis-ci.org/meteor/meteor.svg?branch=devel)](https://travis-ci.org/meteor/meteor)
 [![CircleCI Status](https://circleci.com/gh/meteor/meteor/tree/devel.svg?style=shield&circle-token=c2d3c041506bd493ef3795ffa4448684cfce97b8)](https://circleci.com/gh/meteor/meteor/tree/devel)
 
-If you want to develop applications that are both modern and mobile, then Meteor should be your platform of choice. 
+*Meteor is essentially a full-stack (frontend plus backend) platform that is based on Javascript. If you want to develop applications that are both modern and mobile, then Meteor should be your platform of choice.* 
 
-Meteor is essentially a full-stack (frontend plus backend) platform that is based on Javascript. 
+## Meteor: 
 
-At its core Meteor consists of multiple sets of technologies which can be used to rapidly build connected-client reactive applications. 
-It can also be used a built tool. 
+- Consists of multiple sets of technologies which can be used to rapidly build connected-client reactive applications
+- Can be used as a built tool 
+- Includes a selected set of packages from frameworks such as Node.js 
+- Has an extremely active JavaScript community and can never be short on solutions to problems experienced during development 
 
-Moreover, Meteor also includes a selected set of packages from frameworks such as Node.js. 
+### Meteor Is An Effective Full-stack Development Platform
 
-On top of that, Meteor can leverage an extremely active Javascript community and never be short on solutions to any encountered problem during development. 
+There are a lot of reasons why you would want to use Meteor as your primary development platform. With Meteor, you can take care of all of your front-end and back-end needs with just one language, and that language is JavaScript. When using JavaScript on the Meteor platform, you can handle all three environments including the web browser, mobile devices, and the application server. 
 
-###Why Is Meteor Such An Effective Full-stack Development Platform?
+#### Meteor's Strengths And Simplicity
 
-There are a lot of reasons why you would want to use Meteor as your primary development platform.
+Meteor's ecosystem consists of the most popular open-source JavaScript libraries. Meteor's strength lies in the simplicity of its development environment and the apps written using its technology stack. It simplifies the process of selection by offering the best that the JavaScript community has to offer, but there are literally hundreds of JavaScript frameworks both for the front-end and the back-end to choose from. 
 
-With Meteor, you can take care of all of your frontend and backend needs with just one language. That language is Javascript. 
+Additionally, Meteor further simplifies the server-client relationship by sending data, instead of HTML, over the wire. In other words, using Meteor, you can write apps where the server sends data and the client renders it. 
 
-Javascript, when used on the Meteor platform, can handle all three environments including web browser, mobile device and application server. 
+#### Meteor Saves Development Time
 
-Meteor's strength lies in the simplicity of its development environment and the apps written using its technology stack.
+Perhaps the biggest reason why Meteor saves so much development time and effort is because it offers full stack reactivity. To put it another way, Meteor allows your Apps' user interface to update itself to its latest state smoothly and continuously without much effort.
 
-Additionally, Meteor further simplifies the server-client reliationship by sending data, instead of HTML, over the wire.
-
-In other words, using Meteor, you can write apps where the server sends data and the client renders it. 
-
-Consider the fact that Javascropt has an extremely active community. There are literally hundreds of Javascript frameworks both for the frontend and the backend. 
-
-Meteor simplifies the process of selection by offering the best that the Javascript community has to offer. 
-
-Meteor's ecosystem consists of the most popular open-source Javascript libraries. 
-
-Perhaps the biggest reason why Meteor saves so much development time and effort is because it offers full stack reactivity. 
-
-To put it another way, Meteor allows your app's user interface to update itself to its latest state smoothly and continuously without much effort.
-
-On a side note, remember that Meteor is not for beginner Javascript developers. The Meteor platform is aimed at intermediate developers who have some experience with Javascript and general web development. 
+**Note:** Remember that Meteor is not for beginner JavaScript developers. The Meteor platform is aimed at intermediate developers who have some experience with JavaScript and general web development. 
 
 
 Try the getting started [tutorial](https://www.meteor.com/try).
